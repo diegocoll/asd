@@ -23,7 +23,7 @@ function getIPAddress() {
 
 //------------------------------------ Variables
 
-var PORT   = 4000;
+var PORT   = "4444";
 var HOST   = "35.198.8.140";
 //var HOST   = getIPAddress();
 
