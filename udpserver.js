@@ -24,7 +24,8 @@ function getIPAddress() {
 //------------------------------------ Variables
 
 var PORT   = 4000;
-var HOST   = getIPAddress();
+var HOST   = "35.198.8.140";
+//var HOST   = getIPAddress();
 
 //------------------------------------ Servidor
 
