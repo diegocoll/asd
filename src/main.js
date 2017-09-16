@@ -9,6 +9,7 @@ import VueSocketio from 'vue-socket.io';
 
 Vue.use(Vuetify)
 Vue.use(VueSocketio, 'http://35.198.8.140:8080');
+//Vue.use(VueSocketio, 'http://localhost:8080');
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

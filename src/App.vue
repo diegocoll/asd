@@ -35,33 +35,20 @@
       <v-container fluid>
 
           <v-layout column align-center>
-            <blockquote>
-              &#8220;First, solve the problem. Then, write the code.&#8221;
-              <footer>
-                <small>
-                  <em>&mdash; hora de recepcion </em>
-                </small>
-              </footer>
-            </blockquote>
-            <br>
-            <blockquote>
-              &#8220;First, solve the problem. Then, write the code.&#8221;
-              <footer>
-                <small>
-                  <em>&mdash; hora de recepcion </em>
-                </small>
-              </footer>
-            </blockquote>
-            <br>
-            <blockquote>
-              &#8220;First, solve the problem. Then, write the code.&#8221;
-              <footer>
-                <small>
-                  <em>&mdash; hora de recepcion </em>
-                </small>
-              </footer>
-            </blockquote>
-            <block-quote></block-quote>
+            <h3>IP/PORT - UDP: 35.198.8.140:4444</h3>
+            <div v-for="reporte, i in reportes">
+              <blockquote>
+                <b>{{i}}</b> &mdash;
+                {{reporte.rep}}
+                <footer>
+                  <small>
+                    <em>&mdash; fecha de recepcion: {{reporte.fecha}} </em>
+                  </small>
+                </footer>
+              </blockquote>
+              <br>
+            </div>
+            <!-- <block-quote></block-quote> -->
           </v-layout>
         <!--
         <router-view></router-view>
@@ -73,23 +60,45 @@
 </template>
 
 <script>
-  import Blockquote from "@/components/Blockquote"
+  //import Blockquote from "@/components/Blockquote"
   export default {
     components:{
-      BlockQuote:"Blockquote"
+      //BlockQuote:"Blockquote"
     },
     data () {
       return {
+        reportes: [],
         drawer: true,
         items: [
           { icon: 'developer_board', title: 'Placa 001' },
           { icon: 'developer_board', title: 'Placa 002' },
-          { icon: 'developer_board', title: 'Placa 003' },
-          { icon: 'developer_board', title: 'Placa 004' },
-          { icon: 'developer_board', title: 'Placa 005' }
+          { icon: 'developer_board', title: 'Placa 003' }
         ],
         title: 'LARTEC - Plataforma de prueba',
       }
+    },
+    sockets:{
+      connect: function(){
+        console.log('socket connected')
+      },
+      // customEmit: function(val){
+      //   console.log('this method was fired by the socket server. eg: io.emit("customEmit", data)')
+      // },
+      data_method: function(report){
+        //console.log(report);
+        var instante = new Date();
+        var temp = {
+          rep: report,
+          fecha: instante
+        };
+        this.reportes.push(temp);
+      }
+    },
+    methods: {
+      // clickButton: function(val){
+      //     // $socket is socket.io-client instance
+      //     this.$socket.emit('emit_method', val);
+      //   }
     }
   }
 </script>

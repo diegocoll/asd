@@ -92,17 +92,17 @@ module.exports = {
 //------------------------------------------------------- socket.io
 
 var io = require('socket.io')(server);
-var datos = [50,30,25,10];
+//var datos = [50,30,25,10];
 
 io.on('connection', function(socket){
   console.log('a user connected');
   socket.on('disconnect', function(){
     console.log('user disconnected');
   });
-  socket.on('emit_method', function(msg){
-    console.log('message: ' + msg);     // codigo para probar la transmicion
-    io.emit('data_method',datos);
-  });
+  //socket.on('emit_method', function(msg){
+    //console.log('message: ' + msg);     // codigo para probar la transmicion
+    //io.emit('data_method',datos);
+  //});
 });
 
 //------------------------------------------------------- UDP server
@@ -145,7 +145,32 @@ server.on("message", function (reporte, remote) {
 
 	console.log("reporte: " + reporte + " de " + remote.address + ":" + remote.port);
 
-	//var reporte_str = reporte.toString();		//lo convierte en string (ver si conviene Mayuscula)
+  var reporte_str = reporte.toString();
+
+
+  //------------------------------------ Parseo de mensaje
+
+  var rpt = reporte_str.split(";");
+  var id_eqp_rpt  = rpt[1].substr(0,4);
+  var numero_rpt  = rpt[2].substr(0,4);
+  var checksum_rpt  = rpt[3].substr(1,2);
+
+  //------------------------------------ emisión de mensaje al cliente
+
+  io.emit('data_method',reporte_str);
+
+  //------------------------------------ Armado de ACK
+
+  var ACK = new Buffer([0x0D,0x0A,,,,,,,,,,,,,,,,0x0D,0x0A]);
+
+  ACK.write(">SAK;"+id_eqp_rpt+";"+numero_rpt+"<",2);
+
+  //------------------------------------ Envio de ACK
+
+  server.send(ACK, 0, ACK.length, remote.port, remote.address, function(err, bytes) {
+      if (err) throw err;
+      console.log('Respuesta ACK'+ ACK +'enviada al equipo ' + remote.address + ':' + remote.port);
+    });
 
 });
 
