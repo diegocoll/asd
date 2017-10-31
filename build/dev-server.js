@@ -131,10 +131,32 @@ function getIPAddress() {
 //------------------------------------ Variables
 
 var PORT   = "4444";
-//var HOST   = "35.198.8.140";
-var HOST   = getIPAddress();
+var HOST   = "35.198.8.140";
+//var HOST   = getIPAddress();
 
 //------------------------------------ Servidor
+
+
+function checksumf (strinn){
+	var check = "";
+	for (var i = 0; i < strinn.length; i++)
+			{
+			check ^= strinn[i].charCodeAt();
+			if(strinn[i] === "*")
+				{
+				break;
+				}
+			};
+
+	check = check.toString(16).toUpperCase();		// (ver si conviene convertir en Mayuscula)
+
+	if (check.length===1)
+  	 {
+       check = "0"+check;
+     };
+
+	return check
+};
 
 server.on("error", function (err) {
 	console.log("servidor error:\n" + err.stack);
@@ -159,11 +181,26 @@ server.on("message", function (reporte, remote) {
 
   io.emit('data_method',reporte_str);
 
+  var stringACK = ">SAK;"+ id_eqp_rpt +";"+ numero_rpt +";*" ;
+
+  //console.log(stringACK);
+
+  //------------------------------------ Calculo del checksum
+
+  var checksum = checksumf(stringACK);
+
+  if (checksum.length===1)
+  {
+    checksum = "0"+checksum;
+  };
+
+  console.log('checksum calculado: '+ checksum);
+
   //------------------------------------ Armado de ACK
 
-  var ACK = new Buffer([0x0D,0x0A,,,,,,,,,,,,,,,,0x0D,0x0A]);
+  var ACK = new Buffer([0x0D,0x0A,,,,,,,,,,,,,,,,,,,,0x0D,0x0A]);
 
-  ACK.write(">SAK;"+id_eqp_rpt+";"+numero_rpt+"<",2);
+  ACK.write(">SAK;"+ id_eqp_rpt +";"+ numero_rpt +";*"+ checksum +"<",2);
 
   //------------------------------------ Envio de ACK
 
