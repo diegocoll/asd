@@ -173,8 +173,8 @@ server.on("message", function (reporte, remote) {
   //------------------------------------ Parseo de mensaje
 
   var rpt = reporte_str.split(";");
-  var numero_rpt  = rpt[1].substr(0,4);
-  var id_eqp_rpt  = rpt[2].substr(0,5);
+  var id_eqp_rpt  = rpt[1].substr(0,5);
+  var numero_rpt  = rpt[2].substr(0,4);
   var checksum_rpt  = rpt[3].substr(1,2);
 
   //------------------------------------ emisión de mensaje al cliente
