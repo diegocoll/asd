@@ -173,8 +173,8 @@ server.on("message", function (reporte, remote) {
   //------------------------------------ Parseo de mensaje
 
   var rpt = reporte_str.split(";");
-  var id_eqp_rpt  = rpt[1].substr(0,4);
-  var numero_rpt  = rpt[2].substr(0,4);
+  var numero_rpt  = rpt[1].substr(0,4);
+  var id_eqp_rpt  = rpt[2].substr(0,5);
   var checksum_rpt  = rpt[3].substr(1,2);
 
   //------------------------------------ emisión de mensaje al cliente
@@ -198,7 +198,7 @@ server.on("message", function (reporte, remote) {
 
   //------------------------------------ Armado de ACK
 
-  var ACK = new Buffer([0x0D,0x0A,,,,,,,,,,,,,,,,,,,,0x0D,0x0A]);
+  var ACK = new Buffer([0x0D,0x0A,,,,,,,,,,,,,,,,,,,,,0x0D,0x0A]);
 
   ACK.write(">SAK;"+ id_eqp_rpt +";"+ numero_rpt +";*"+ checksum +"<",2);
 
