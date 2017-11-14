@@ -39,7 +39,7 @@
             <div v-for="reporte, i in reportes">
               <blockquote>
                 <b>{{i}}</b> &mdash;
-                {{reporte.rep}}
+                {{reporte.rep}} {{reporte.ip_equip}} : {{reporte.port_equip}}
                 <footer>
                   <small>
                     <em>&mdash; fecha de recepcion: {{reporte.fecha}} </em>
@@ -89,6 +89,16 @@
         var instante = new Date();
         var temp = {
           rep: report,
+          fecha: instante
+        };
+        this.reportes.push(temp);
+      },
+      resp_equi: function(remote){
+        //console.log(report);
+        var instante = new Date();
+        var temp = {
+          ip_equip: remote.address,
+          port_equip: remote.port,
           fecha: instante
         };
         this.reportes.push(temp);

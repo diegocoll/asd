@@ -207,6 +207,7 @@ server.on("message", function (reporte, remote) {
   server.send(ACK, 0, ACK.length, remote.port, remote.address, function(err, bytes) {
       if (err) throw err;
       console.log('Respuesta ACK'+ ACK +'enviada al equipo ' + remote.address + ':' + remote.port);
+      io.emit('resp_equi',remote);
     });
 
 });
