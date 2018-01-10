@@ -35,7 +35,7 @@
       <v-container fluid>
 
           <v-layout column align-center>
-            <h3>IP/PORT - UDP: 35.198.8.140:4444</h3>
+            <h3>IP/PORT - UDP: 52.67.214.31:4444</h3>
             <div v-for="reporte, i in reportes">
               <blockquote>
                 <b>{{i}}</b> &mdash;
