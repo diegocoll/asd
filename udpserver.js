@@ -107,21 +107,37 @@ function procesado_reporte(remote, reporte_str, id_eqp_rpt, numero_rpt, checksum
 
   			} else {
 
-  				//------------------------------------ Armado de ACK
+					//------------------------------------ emisión de mensaje al cliente
 
-  				var ACK = new Buffer([0x0D,0x0A,,,,,,,,,,,,,,,,0x0D,0x0A]);
+					// io.emit('data_method',reporte_str); INSTALAR SOCKETIO
 
-     				ACK.write(">SAK;"+id_eqp_rpt+";"+numero_rpt+"<",2);
+					var stringACK = ">SAK;"+ id_eqp_rpt +";"+ numero_rpt +";*" ;
 
-     				//------------------------------------ Envio de ACK
+					//console.log(stringACK);
 
-  				server.send(ACK, 0, ACK.length, remote.port, remote.address, function(err, bytes) {
-      				if (err) throw err;
+					//------------------------------------ Calculo del checksum
 
-      				// console.log('Respuesta ACK'+ ACK +'enviada al equipo ' + remote.address + ':' + remote.port);
+					var checksum = checksumf(stringACK);
 
-            });
+					// console.log('checksum calculado: '+ checksum);
+					//
+					//------------------------------------ Armado de ACK
 
+					var ACK = new Buffer([0x0D,0x0A,,,,,,,,,,,,,,,,,,,,,0x0D,0x0A]);
+
+					ACK.write(">SAK;"+ id_eqp_rpt +";"+ numero_rpt +";*"+ checksum +"<",2);
+
+					// var ACK = new Buffer([0x0D,0x0A,,,,,,,,,,,,,,,,0x0D,0x0A]);
+          //
+					// ACK.write(">SAK;"+id_eqp_rpt+";"+numero_rpt+";"++"<",2);
+
+					//------------------------------------ Envio de ACK
+
+					server.send(ACK, 0, ACK.length, remote.port, remote.address, function(err, bytes) {
+					    if (err) throw err;
+					    console.log('Respuesta ACK'+ ACK +'enviada al equipo ' + remote.address + ':' + remote.port);
+					    // io.emit('resp_equi',remote);
+					  });
       		}
   		});
 
@@ -145,6 +161,7 @@ server.on("message", function (reporte, remote) {
 	// console.log("reporte: " + reporte + " de " + remote.address + ":" + remote.port);
 
   // var reporte_str = reporte.toString();
+
   var reporte_str = reporte.toString().toUpperCase();
 
   //------------------------------------ Calculo del checksum
@@ -205,38 +222,6 @@ server.on("message", function (reporte, remote) {
   		console.log('checksum incorrecto');
   }
 
-  //------------------------------------ emisión de mensaje al cliente
-
-  // io.emit('data_method',reporte_str); INSTALAR SOCKETIO
-
-  // var stringACK = ">SAK;"+ id_eqp_rpt +";"+ numero_rpt +";*" ;
-
-  //console.log(stringACK);
-
-  //------------------------------------ Calculo del checksum
-
-  // var checksum = checksumf(stringACK);
-  //
-  // if (checksum.length===1)
-  // {
-  //   checksum = "0"+checksum;
-  // };
-  //
-  // console.log('checksum calculado: '+ checksum);
-  //
-  // //------------------------------------ Armado de ACK
-  //
-  // var ACK = new Buffer([0x0D,0x0A,,,,,,,,,,,,,,,,,,,,,0x0D,0x0A]);
-  //
-  // ACK.write(">SAK;"+ id_eqp_rpt +";"+ numero_rpt +";*"+ checksum +"<",2);
-  //
-  // //------------------------------------ Envio de ACK
-  //
-  // server.send(ACK, 0, ACK.length, remote.port, remote.address, function(err, bytes) {
-  //     if (err) throw err;
-  //     console.log('Respuesta ACK'+ ACK +'enviada al equipo ' + remote.address + ':' + remote.port);
-  //     // io.emit('resp_equi',remote);
-  //   });
 
 });
 
