@@ -118,7 +118,7 @@ function procesado_reporte(remote, reporte_str, id_eqp_rpt, numero_rpt, checksum
   				server.send(ACK, 0, ACK.length, remote.port, remote.address, function(err, bytes) {
       				if (err) throw err;
 
-      				console.log('Respuesta ACK'+ ACK +'enviada al equipo ' + remote.address + ':' + remote.port);
+      				// console.log('Respuesta ACK'+ ACK +'enviada al equipo ' + remote.address + ':' + remote.port);
 
             });
 
@@ -142,7 +142,7 @@ server.on("error", function (err) {
 
 server.on("message", function (reporte, remote) {
 
-	console.log("reporte: " + reporte + " de " + remote.address + ":" + remote.port);
+	// console.log("reporte: " + reporte + " de " + remote.address + ":" + remote.port);
 
   // var reporte_str = reporte.toString();
   var reporte_str = reporte.toString().toUpperCase();
@@ -159,12 +159,12 @@ server.on("message", function (reporte, remote) {
   var numero_rpt  = rpt[2].substr(0,4);
   var checksum_rpt  = rpt[3].substr(1,2);
 
-  console.log(cabeza_rpt);
-  console.log(id_eqp_rpt);
-  console.log(numero_rpt);
-  console.log(checksum_rpt);
-  console.log(checksum);
-  console.log(reporte.length);
+  // console.log(cabeza_rpt);
+  // console.log(id_eqp_rpt);
+  // console.log(numero_rpt);
+  // console.log(checksum_rpt);
+  // console.log(checksum);
+  // console.log(reporte.length);
 
   //------------------------------------ Validacion del checksum
 
